@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+    <title>My Website</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css">
+</head>
+<body>
+    <!-- template from yt -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo" data-aos="fade-down" data-aos-duration="1000">
+                <a href="#home">strona.dev</a>
+            </div>
+            <div class="links">
+                <div class="link" data-aos="fade-down" data-aos-duration="1000" data-aos-delay="100"><a href="index.html">Home</a></div>
+                <div class="link" data-aos="fade-down" data-aos-duration="1000" data-aos-delay="200"><a href="#about">About</a></div>
+                <div class="link" data-aos="fade-down" data-aos-duration="1000" data-aos-delay="300"><a href="#skills">Skills</a></div>
+                <div class="link" data-aos="fade-down" data-aos-duration="1000" data-aos-delay="400"><a href="#works">My Works</a></div>
+                
+            </div>
+            <i class="fa-solid fa-bars hamburg" onclick="hamburg()"></i>
+        </div>
+        <div class="dropdown">
+            <div class="links">
+                <a href="index.html">Home</a>
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#works">My Works</a>
+                <i class="fa-solid fa-xmark cancel" onclick="cancel()"></i>
+            </div>
+        </div>
+    </nav>
+    <section id="works" >
+
+            <div class="works-container">
+                <h1>My Works</h1>
+                <div class="works-content">
+                    
+                    
+
+                    <div class="carousel">
+                        <div class="carousel-track">
+                            <div class="carousel-item"><img src="assets/img/carousel/image1.png" alt="Image 1"></div>
+                            <div class="carousel-item"><img src="assets/img/carousel/image2.png" alt="Image 2"></div>
+                            <div class="carousel-item"><img src="assets/img/carousel/image3.png" alt="Image 3"></div>
+                            <div class="carousel-item"><img src="assets/img/carousel/image4.png" alt="Image 4"></div>
+                            <div class="carousel-item"><img src="assets/img/carousel/image5.png" alt="Image 5"></div>
+                        </div>
+                        <button class="carousel-button prev"><</button>
+                        <button class="carousel-button next">></button>
+                    </div>
+
+                    <div class="player">
+                        <iframe 
+                            src="https://www.youtube.com/embed/LXb3EKWsInQ" 
+                            title="YouTube video player" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+
+                    <div class="bg-bottom"><img src="assets/img/bottom.png"></div>
+            </div>
+        </section>
+        <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+        <script src="assets/js/script.js"></script>
+        <footer>
+            <div class="footer-container">
+                <div class="footer-content">
+                    <p>2025 Strona. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+        <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+        <script src="assets/js/script.js"></script>
+</body>
