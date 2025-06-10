@@ -105,7 +105,6 @@ function initSmoothScrolling() {
 
   navLinks.forEach((link) => {
     link.addEventListener("click", (event) => {
-      event.preventDefault();
       const targetId = link.getAttribute("href").substring(1);
       const targetSection = document.getElementById(targetId);
 
@@ -119,31 +118,7 @@ function initSmoothScrolling() {
   });
 }
 
-// Carousel
-function initCarousel() {
-  const track = document.querySelector(".carousel-track");
-  const items = Array.from(track.children);
-  const prevButton = document.querySelector(".carousel-button.prev");
-  const nextButton = document.querySelector(".carousel-button.next");
-  let currentIndex = 0;
 
-  function updateCarousel() {
-    const itemWidth = items[0].getBoundingClientRect().width;
-    track.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
-  }
-
-  nextButton.addEventListener("click", () => {
-    currentIndex = (currentIndex + 1) % items.length;
-    updateCarousel();
-  });
-
-  prevButton.addEventListener("click", () => {
-    currentIndex = (currentIndex - 1 + items.length) % items.length;
-    updateCarousel();
-  });
-
-  updateCarousel();
-}
 
 // Typewriter effect - ABOUT
 function initAboutTypewriter() {
@@ -177,3 +152,33 @@ function initAboutTypewriter() {
 
   observer.observe(aboutSection);
 }
+
+
+
+  // Carousel
+function initCarousel() {
+  const track = document.querySelector(".carousel-track");
+  const items = Array.from(track.children);
+  const prevButton = document.querySelector(".carousel-button.prev");
+  const nextButton = document.querySelector(".carousel-button.next");
+  let currentIndex = 0;
+
+  function updateCarousel() {
+    const itemWidth = items[0].getBoundingClientRect().width;
+    track.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+  }
+
+  nextButton.addEventListener("click", () => {
+    currentIndex = (currentIndex + 1) % items.length;
+    updateCarousel();
+  });
+
+  prevButton.addEventListener("click", () => {
+    currentIndex = (currentIndex - 1 + items.length) % items.length;
+    updateCarousel();
+  });
+
+  updateCarousel();
+}
+
+
