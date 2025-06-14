@@ -1,3 +1,12 @@
+// Function to close dropdown
+function closeDropdown() {
+  const navbar = document.querySelector(".dropdown");
+  if (navbar) {
+    navbar.classList.remove("active");
+    document.body.style.overflow = ""; // Restore scrolling
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   AOS.init();
 
@@ -5,30 +14,62 @@ document.addEventListener("DOMContentLoaded", () => {
   initStarsAnimation();
 
   // Initialize shooting stars
-  initShootingStars();
+  const shootingStarsContainer = document.querySelector(".shooting-stars-container");
+  if (shootingStarsContainer) {
+    initShootingStars();
+  }
 
   // Initialize smooth scrolling for navigation links
   initSmoothScrolling();
 
-  // Initialize carousel
-  initCarousel();
+  // Initialize carousel if on works page
+  const carousel = document.querySelector(".carousel");
+  if (carousel) {
+    initCarousel();
+  }
 
-  // Initialize typewriter effect for "HOME"
-  typeEffect();
+  // Initialize typewriter effects based on current page
+  const typingText = document.getElementById("typing-text");
+  if (typingText) {
+    setTimeout(typeEffect, 1000); // Delay to ensure proper initialization
+  }
 
-  // Initialize typewriter effect for "ABOUT"
-  initAboutTypewriter();
+  const aboutSection = document.querySelector("#about");
+  if (aboutSection) {
+    initAboutTypewriter();
+  }
+
+  // Add click event listener to close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    const navbar = document.querySelector(".dropdown");
+    const logo = document.querySelector(".logo");
+    
+    if (navbar && navbar.classList.contains("active")) {
+      // Only close if click is outside both the dropdown and logo
+      if (!navbar.contains(e.target) && !logo.contains(e.target)) {
+        closeDropdown();
+      }
+    }
+  });
 });
 
-// Hamburger menu functions
-function hamburg() {
+// Dropdown menu functions
+function hamburg(event) {
+  event.stopPropagation(); // Prevent click from bubbling to document
   const navbar = document.querySelector(".dropdown");
-  navbar.style.transform = "translateY(0px)";
+  const isOpen = navbar.classList.contains("active");
+  
+  if (isOpen) {
+    closeDropdown();
+  } else {
+    navbar.classList.add("active");
+    document.body.style.overflow = "hidden"; // Prevent scrolling when menu is open
+  }
 }
 
-function cancel() {
-  const navbar = document.querySelector(".dropdown");
-  navbar.style.transform = "translateY(-1000px)";
+function cancel(event) {
+  event.stopPropagation(); // Prevent click from bubbling
+  closeDropdown();
 }
 
 // Typewriter effect - HOME
@@ -41,8 +82,9 @@ const pause = 2000;
 
 function typeEffect() {
   const span = document.getElementById("typing-text");
+  if (!span) return;  // Safety check
+  
   const currentText = texts[count];
-
   span.textContent = isDeleting
     ? currentText.substring(0, index--)
     : currentText.substring(0, index++);
@@ -101,11 +143,24 @@ function initShootingStars() {
 
 // Smooth scrolling for navigation links
 function initSmoothScrolling() {
-  const navLinks = document.querySelectorAll("nav .links a");
+  const navLinks = document.querySelectorAll("nav .links a, .dropdown .links a");
 
   navLinks.forEach((link) => {
     link.addEventListener("click", (event) => {
-      const targetId = link.getAttribute("href").substring(1);
+      event.preventDefault(); // Prevent default for all links first
+      
+      const href = link.getAttribute("href");
+      
+      // Close dropdown menu first
+      closeDropdown();
+
+      // Handle external links (like works.html)
+      if (href.includes(".html")) {
+        window.location.href = href; // Navigate to the new page
+        return;
+      }
+
+      const targetId = href.substring(1);
       const targetSection = document.getElementById(targetId);
 
       if (targetSection) {
@@ -118,67 +173,177 @@ function initSmoothScrolling() {
   });
 }
 
-
-
-// Typewriter effect - ABOUT
-function initAboutTypewriter() {
-  const aboutSection = document.querySelector("#about");
-  const typewriterText = document.querySelector("#typewriter-text");
-  const aboutDesc = document.querySelector("#about-desc");
-  const text = "Hello, I'm Strona. And this is me. xd";
-  let index = 0;
-
-  function typeWriter() {
-    if (index < text.length) {
-      typewriterText.textContent += text.charAt(index);
-      index++;
-      setTimeout(typeWriter, 100);
-    } else {
-      setTimeout(() => (aboutDesc.style.opacity = 1), 1200);
-    }
-  }
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting && typewriterText.textContent === "") {
-          typeWriter();
-          observer.unobserve(aboutSection);
-        }
-      });
-    },
-    { threshold: 0.5 }
-  );
-
-  observer.observe(aboutSection);
-}
-
-
-
-  // Carousel
+// Carousel
 function initCarousel() {
   const track = document.querySelector(".carousel-track");
   const items = Array.from(track.children);
   const prevButton = document.querySelector(".carousel-button.prev");
   const nextButton = document.querySelector(".carousel-button.next");
   let currentIndex = 0;
+  let isTransitioning = false;
+  let autoplayInterval;
 
-  function updateCarousel() {
+  function updateCarousel(smooth = true) {
+    if (isTransitioning) return;
+    
     const itemWidth = items[0].getBoundingClientRect().width;
+    isTransitioning = true;
+    
+    if (!smooth) {
+      track.style.transition = 'none';
+    }
+    
     track.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+    
+    if (!smooth) {
+      // Force reflow
+      track.offsetHeight;
+      track.style.transition = '';
+    }
+
+    setTimeout(() => {
+      isTransitioning = false;
+    }, 500);
   }
 
-  nextButton.addEventListener("click", () => {
-    currentIndex = (currentIndex + 1) % items.length;
+  function goToSlide(index) {
+    currentIndex = (index + items.length) % items.length;
     updateCarousel();
+  }
+
+  function nextSlide() {
+    goToSlide(currentIndex + 1);
+  }
+
+  function prevSlide() {
+    goToSlide(currentIndex - 1);
+  }
+
+  // Autoplay
+  function startAutoplay() {
+    if (autoplayInterval) {
+      clearInterval(autoplayInterval);
+    }
+    autoplayInterval = setInterval(nextSlide, 5000);
+  }
+
+  function pauseAutoplay() {
+    if (autoplayInterval) {
+      clearInterval(autoplayInterval);
+      autoplayInterval = null;
+    }
+  }
+
+  function resumeAutoplay() {
+    if (!autoplayInterval) {
+      startAutoplay();
+    }
+  }
+
+  function resetAutoplay() {
+    pauseAutoplay();
+    setTimeout(() => {
+      startAutoplay();
+    }, 500); // Wait for transition to complete before starting new timer
+  }
+
+  // Event Listeners
+  nextButton.addEventListener("click", () => {
+    pauseAutoplay();
+    nextSlide();
+    resetAutoplay();
   });
 
   prevButton.addEventListener("click", () => {
-    currentIndex = (currentIndex - 1 + items.length) % items.length;
-    updateCarousel();
+    pauseAutoplay();
+    prevSlide();
+    resetAutoplay();
   });
 
-  updateCarousel();
+  // Window resize handler
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      updateCarousel(false);
+    }, 250);
+  });
+
+  // Touch support
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  track.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+    pauseAutoplay();
+  });
+
+  track.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+    resumeAutoplay();
+  });
+
+  function handleSwipe() {
+    const diff = touchStartX - touchEndX;
+    const threshold = 50;
+
+    if (Math.abs(diff) > threshold) {
+      if (diff > 0) nextSlide();
+      else prevSlide();
+    }
+  }
+
+  // Initialize
+  updateCarousel(false);
+  startAutoplay();
+
+  // Pause autoplay when tab/window is not visible
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) pauseAutoplay();
+    else resumeAutoplay();
+  });
 }
 
+// Typewriter effect - ABOUT
+function initAboutTypewriter() {
+  const aboutSection = document.querySelector("#about");
+  const typewriterText = document.querySelector("#typewriter-text");
+  const aboutDesc = document.querySelector("#about-desc");
+  
+  if (!aboutSection || !typewriterText || !aboutDesc) return; // Safety check
+  
+  const text = "Hello, I'm Strona.";
+  let index = 0;
+  let isTyping = false;
 
+  function typeWriter() {
+    if (!typewriterText) return; // Additional safety check
+    
+    if (index < text.length) {
+      typewriterText.textContent += text.charAt(index);
+      index++;
+      setTimeout(typeWriter, 200);
+    } else if (!isTyping) {
+      isTyping = true;
+      aboutDesc.style.opacity = "1";
+    }
+  }
+
+  // Start observing with a delay to ensure proper initialization
+  setTimeout(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !isTyping && typewriterText && typewriterText.textContent === "") {
+            typeWriter();
+            observer.unobserve(aboutSection);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    observer.observe(aboutSection);
+  }, 500);
+}

@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <title>My Website</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css">
@@ -12,35 +15,37 @@
     <!-- template from yt -->
     <nav>
         <div class="nav-container">
-            <div class="logo" data-aos="fade-down" data-aos-duration="1000">
-                <a href="#home">strona.dev</a>
+            <div class="logo" data-aos="fade-down" data-aos-duration="1000" onclick="hamburg(event)">
+                <a href="#" onclick="event.preventDefault()">strona's web <i class="fa-solid fa-chevron-down"></i></a>
+                <div class="dropdown">
+                    <div class="links">
+                        <a href="#home" class="active">Home</a>
+                        <a href="works.html">My Works</a>
+                        <i class="fa-solid fa-xmark cancel" onclick="cancel()"></i>
+                    </div>
+                </div>
             </div>
             <div class="links">
                 <div class="link" data-aos="fade-down" data-aos-duration="1000" data-aos-delay="100"><a href="#home">Home</a></div>
                 <div class="link" data-aos="fade-down" data-aos-duration="1000" data-aos-delay="200"><a href="#about">About</a></div>
                 <div class="link" data-aos="fade-down" data-aos-duration="1000" data-aos-delay="300"><a href="#skills">Skills</a></div>
                 <div class="link" data-aos="fade-down" data-aos-duration="1000" data-aos-delay="400"><a href="works.html">My Works</a></div>
-                
             </div>
             <i class="fa-solid fa-bars hamburg" onclick="hamburg()"></i>
-        </div>
-        <div class="dropdown">
-            <div class="links">
-                <a href="#home">Home</a>
-                <a href="#about">About</a>
-                <a href="#skills">Skills</a>
-                <a href="works.html">My Works</a>
-                <i class="fa-solid fa-xmark cancel" onclick="cancel()"></i>
-            </div>
-        </div>
     </nav>
     
-    <section id="home" style="background: url('assets/img/wonderdaan-desultor.gif') no-repeat calc(300px) center / cover; z-index: -1;" >
+    <section id="home">
             <div class="main-container">
                 <div class="stars-container"></div>
                 <div class="content">
-                    <h1 data-aos="fade-left" data-aos-duration="1000" data-aos-delay="800">Hello World, I'm <span>Strona</span></h1>
-                    <div class="typewriter" data-aos="fade-right" data-aos-duration="1000" data-aos-delay="900">I'm an aspiring <span id="typing-text"></span></div>
+                    <h1 data-aos="fade-left" data-aos-duration="1000" data-aos-delay="800">
+                        <span>Hello World,</span>
+                        <span>I'm <span class="highlight">Strona</span></span>
+                    </h1>
+                    <div class="typewriter" data-aos="fade-right" data-aos-duration="1000" data-aos-delay="900">
+                        <span>I'm an aspiring</span>
+                        <span id="typing-text"></span>
+                    </div>
                     <p data-aos="flip-up" data-aos-duration="1000" data-aos-delay="1000">A curious person who is willing to learn more about interesting stuff...</p>
                     <div class="social-links" data-aos="flip-down" data-aos-duration="1000" data-aos-delay="1200">
                         <a href="https://www.facebook.com/rltags" ><i class="fa-brands fa-facebook"></i></a>
@@ -49,7 +54,7 @@
                         <a href="https://github.com/strawnah"><i class="fa-brands fa-github"></i></a>
                     </div>
                     <div class="btn" data-aos="zoom-out-left" data-aos-duration="1000" data-aos-delay="1300">
-                        <a href="https://lms.korphildavao.site/"><button>A Button to Success</button></a>
+                        <a href=""><button>Back to Quotes</button></a>
                     </div>
                 </div>
             </div>
@@ -107,7 +112,5 @@
                 </div>
             </div>
         </footer>
-        <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-        <script src="assets/js/script.js"></script>
     </body>
 </html>
