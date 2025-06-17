@@ -1,188 +1,231 @@
-// Function to close dropdown
+// Constants
+const TYPING_SPEED = 150;
+const TYPING_PAUSE = 2000;
+const TYPING_TEXTS = ["Video Editor", "Graphics Designer", "Web Developer"];
+
+// DOM Elements state
+let typingCount = 0;
+let typingIndex = 0;
+let isDeleting = false;
+
+// Dropdown Menu Functions
 function closeDropdown() {
-  const navbar = document.querySelector(".dropdown");
-  if (navbar) {
-    navbar.classList.remove("active");
-    document.body.style.overflow = ""; // Restore scrolling
-    
-    // Wait for transition to complete before hiding
-    navbar.addEventListener('transitionend', function handler() {
-      if (!navbar.classList.contains('active')) {
-        navbar.style.display = 'none';
-      }
-      navbar.removeEventListener('transitionend', handler);
-    });
-  }
+    const navbar = document.querySelector(".dropdown");
+    if (navbar) {
+        navbar.classList.remove("active");
+        document.body.style.overflow = ""; // Restore scrolling
+        
+        navbar.addEventListener('transitionend', function handler() {
+            if (!navbar.classList.contains('active')) {
+                navbar.style.display = 'none';
+            }
+            navbar.removeEventListener('transitionend', handler);
+        });
+    }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  AOS.init();
-
-  // Initialize stars animation
-  initStarsAnimation();
-
-  // Initialize shooting stars
-  const shootingStarsContainer = document.querySelector(".shooting-stars-container");
-  if (shootingStarsContainer) {
-    initShootingStars();
-  }
-
-  // Initialize smooth scrolling for navigation links
-  initSmoothScrolling();
-
-  // Initialize carousel if on works page
-  const carousel = document.querySelector(".carousel");
-  if (carousel) {
-    initCarousel();
-  }
-
-  // Initialize typewriter effects based on current page
-  const typingText = document.getElementById("typing-text");
-  if (typingText) {
-    setTimeout(typeEffect, 1000); // Delay to ensure proper initialization
-  }
-
-  const aboutSection = document.querySelector("#about");
-  if (aboutSection) {
-    initAboutTypewriter();
-  }
-
-  // Add click event listener to close dropdown when clicking outside
-  document.addEventListener('click', (e) => {
-    const navbar = document.querySelector(".dropdown");
-    const logo = document.querySelector(".logo");
-    
-    if (navbar && navbar.classList.contains("active")) {
-      // Only close if click is outside both the dropdown and logo
-      if (!navbar.contains(e.target) && !logo.contains(e.target)) {
-        closeDropdown();
-      }
-    }
-  });
-});
-
-// Dropdown menu functions
 function hamburg(event) {
-  if (event) {
-    event.stopPropagation(); // Prevent click from bubbling to document
-  }
-  const navbar = document.querySelector(".dropdown");
-  const isOpen = navbar.classList.contains("active");
-  
-  if (isOpen) {
-    closeDropdown();
-  } else {
-    navbar.classList.add("active");
-    navbar.style.display = 'flex'; // Ensure it's displayed
-    document.body.style.overflow = "hidden"; // Prevent scrolling when menu is open
-  }
+    if (event) {
+        event.stopPropagation(); // Prevent click from bubbling
+    }
+    
+    // Only handle dropdown in mobile view
+    if (window.innerWidth <= 768) {
+        const navbar = document.querySelector(".dropdown");
+        const isOpen = navbar.classList.contains("active");
+        
+        if (isOpen) {
+            closeDropdown();
+        } else {
+            navbar.classList.add("active");
+            navbar.style.display = 'flex';
+            document.body.style.overflow = "hidden";
+        }
+    } else {
+        // In desktop mode, directly navigate to home.html
+        window.location.href = 'home.html';
+    }
 }
 
 function cancel(event) {
-  event.stopPropagation(); // Prevent click from bubbling
-  closeDropdown();
+    event.stopPropagation();
+    closeDropdown();
 }
 
-// Typewriter effect - HOME
-const texts = ["Video Editor", "Graphics Designer", "Web Developer"];
-let count = 0;
-let index = 0;
-let isDeleting = false;
-const speed = 150;
-const pause = 2000;
-
+// Typewriter Effects
 function typeEffect() {
-  const span = document.getElementById("typing-text");
-  if (!span) return;  // Safety check
-  
-  const currentText = texts[count];
-  span.textContent = isDeleting
-    ? currentText.substring(0, index--)
-    : currentText.substring(0, index++);
+    const span = document.getElementById("typing-text");
+    if (!span) return;
+    
+    const currentText = TYPING_TEXTS[typingCount];
+    span.textContent = isDeleting
+        ? currentText.substring(0, typingIndex--)
+        : currentText.substring(0, typingIndex++);
 
-  if (!isDeleting && index === currentText.length + 1) {
-    isDeleting = true;
-    setTimeout(typeEffect, pause);
-  } else if (isDeleting && index === 0) {
-    isDeleting = false;
-    count = (count + 1) % texts.length;
-    setTimeout(typeEffect, 300);
-  } else {
-    setTimeout(typeEffect, isDeleting ? speed / 2 : speed);
-  }
-}
-
-// Stars animation
-function initStarsAnimation() {
-  const sectionsWithStars = document.querySelectorAll(".stars-container");
-  const numberOfStars = 100;
-
-  sectionsWithStars.forEach((starsContainer) => {
-    for (let i = 0; i < numberOfStars; i++) {
-      const star = document.createElement("div");
-      star.classList.add("star");
-
-      star.style.left = `${Math.random() * 100}vw`;
-      star.style.top = `${Math.random() * 100}vh`;
-      star.style.animationDuration = `${Math.random() * 5 + 5}s`;
-      star.style.animationDelay = `${Math.random() * 5}s`;
-
-      starsContainer.appendChild(star);
+    if (!isDeleting && typingIndex === currentText.length + 1) {
+        isDeleting = true;
+        setTimeout(typeEffect, TYPING_PAUSE);
+    } else if (isDeleting && typingIndex === 0) {
+        isDeleting = false;
+        typingCount = (typingCount + 1) % TYPING_TEXTS.length;
+        setTimeout(typeEffect, 300);
+    } else {
+        setTimeout(typeEffect, isDeleting ? TYPING_SPEED / 2 : TYPING_SPEED);
     }
-  });
 }
 
-// Shooting stars animation
-function initShootingStars() {
-  const shootingStarsContainer = document.querySelector(".shooting-stars-container");
+// Animation Functions
+function initStarsAnimation() {
+    const sectionsWithStars = document.querySelectorAll(".stars-container");
+    const numberOfStars = 100;
 
-  function createShootingStar() {
-    const star = document.createElement("div");
-    star.classList.add("shooting-star");
-
-    star.style.left = `${Math.random() * window.innerWidth}px`;
-    star.style.top = `${Math.random() * window.innerHeight / 2}px`;
-    star.style.animationDuration = `${Math.random() * 2 + 1}s`;
-
-    shootingStarsContainer.appendChild(star);
-
-    setTimeout(() => star.remove(), 1500 * parseFloat(star.style.animationDuration));
-  }
-
-  setInterval(createShootingStar, 300);
-}
-
-// Smooth scrolling for navigation links
-function initSmoothScrolling() {
-  const navLinks = document.querySelectorAll("nav .links a, .dropdown .links a");
-
-  navLinks.forEach((link) => {
-    link.addEventListener("click", (event) => {
-      event.preventDefault(); // Prevent default for all links first
-      
-      const href = link.getAttribute("href");
-      
-      // Close dropdown menu first
-      closeDropdown();
-
-      // Handle external links (like works.html)
-      if (href.includes(".html")) {
-        window.location.href = href; // Navigate to the new page
-        return;
-      }
-
-      const targetId = href.substring(1);
-      const targetSection = document.getElementById(targetId);
-
-      if (targetSection) {
-        targetSection.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }
+    sectionsWithStars.forEach((starsContainer) => {
+        for (let i = 0; i < numberOfStars; i++) {
+            const star = document.createElement("div");
+            star.classList.add("star");
+            star.style.left = `${Math.random() * 100}vw`;
+            star.style.top = `${Math.random() * 100}vh`;
+            star.style.animationDuration = `${Math.random() * 5 + 5}s`;
+            star.style.animationDelay = `${Math.random() * 5}s`;
+            starsContainer.appendChild(star);
+        }
     });
-  });
 }
+
+function initShootingStars() {
+    const container = document.querySelector(".shooting-stars-container");
+    if (!container) return;
+
+    function createShootingStar() {
+        const star = document.createElement("div");
+        star.classList.add("shooting-star");
+        star.style.left = `${Math.random() * window.innerWidth}px`;
+        star.style.top = `${Math.random() * window.innerHeight / 2}px`;
+        star.style.animationDuration = `${Math.random() * 2 + 1}s`;
+        
+        container.appendChild(star);
+        setTimeout(() => star.remove(), 1500 * parseFloat(star.style.animationDuration));
+    }
+
+    setInterval(createShootingStar, 300);
+}
+
+// Navigation
+function initSmoothScrolling() {
+    const navLinks = document.querySelectorAll("nav .links a, .dropdown .links a");
+
+    navLinks.forEach((link) => {
+        link.addEventListener("click", (event) => {
+            event.preventDefault();
+            const href = link.getAttribute("href");
+            
+            closeDropdown();
+
+            if (href.includes(".html")) {
+                window.location.href = href;
+                return;
+            }
+
+            const targetId = href.substring(1);
+            const targetSection = document.getElementById(targetId);
+            
+            if (targetSection) {
+                targetSection.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                });
+            }
+        });
+    });
+}
+
+// About Page Typewriter
+function initAboutTypewriter() {
+    const aboutSection = document.querySelector("#about");
+    const typewriterText = document.querySelector("#typewriter-text");
+    const aboutDesc = document.querySelector("#about-desc");
+    
+    if (!aboutSection || !typewriterText || !aboutDesc) return;
+    
+    const text = "Hello, I'm Strona.";
+    let index = 0;
+    let isTyping = false;
+
+    function typeWriter() {
+        if (!typewriterText) return;
+        
+        if (index < text.length) {
+            typewriterText.textContent += text.charAt(index);
+            index++;
+            setTimeout(typeWriter, 200);
+        } else if (!isTyping) {
+            isTyping = true;
+            aboutDesc.style.opacity = "1";
+        }
+    }
+
+    setTimeout(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting && !isTyping && typewriterText.textContent === "") {
+                        typeWriter();
+                        observer.unobserve(aboutSection);
+                    }
+                });
+            },
+            { threshold: 0.5 }
+        );
+
+        observer.observe(aboutSection);
+    }, 500);
+}
+
+// Initialize everything on DOM load
+document.addEventListener("DOMContentLoaded", () => {
+    // Initialize AOS library
+    AOS.init();
+
+    // Initialize animations
+    initStarsAnimation();
+    
+    const shootingStarsContainer = document.querySelector(".shooting-stars-container");
+    if (shootingStarsContainer) {
+        initShootingStars();
+    }
+
+    // Initialize navigation
+    initSmoothScrolling();
+
+    // Initialize carousel if on works page
+    const carousel = document.querySelector(".carousel");
+    if (carousel) {
+        initCarousel();
+    }
+
+    // Initialize typewriter effects
+    const typingText = document.getElementById("typing-text");
+    if (typingText) {
+        setTimeout(typeEffect, 1000);
+    }
+
+    const aboutSection = document.querySelector("#about");
+    if (aboutSection) {
+        initAboutTypewriter();
+    }
+
+    // Setup dropdown click outside handler
+    document.addEventListener('click', (e) => {
+        const navbar = document.querySelector(".dropdown");
+        const logo = document.querySelector(".logo");
+        
+        if (navbar?.classList.contains("active")) {
+            if (!navbar.contains(e.target) && !logo.contains(e.target)) {
+                closeDropdown();
+            }
+        }
+    });
+});
 
 // Carousel
 function initCarousel() {
@@ -314,47 +357,4 @@ function initCarousel() {
     if (document.hidden) pauseAutoplay();
     else resumeAutoplay();
   });
-}
-
-// Typewriter effect - ABOUT
-function initAboutTypewriter() {
-  const aboutSection = document.querySelector("#about");
-  const typewriterText = document.querySelector("#typewriter-text");
-  const aboutDesc = document.querySelector("#about-desc");
-  
-  if (!aboutSection || !typewriterText || !aboutDesc) return; // Safety check
-  
-  const text = "Hello, I'm Strona.";
-  let index = 0;
-  let isTyping = false;
-
-  function typeWriter() {
-    if (!typewriterText) return; // Additional safety check
-    
-    if (index < text.length) {
-      typewriterText.textContent += text.charAt(index);
-      index++;
-      setTimeout(typeWriter, 200);
-    } else if (!isTyping) {
-      isTyping = true;
-      aboutDesc.style.opacity = "1";
-    }
-  }
-
-  // Start observing with a delay to ensure proper initialization
-  setTimeout(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !isTyping && typewriterText && typewriterText.textContent === "") {
-            typeWriter();
-            observer.unobserve(aboutSection);
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
-
-    observer.observe(aboutSection);
-  }, 500);
 }

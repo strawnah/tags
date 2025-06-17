@@ -3,114 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cosmic quotes</title>
+    <meta name="theme-color" content="#0f0c29">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <title>My Website</title>
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/quote.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%234f8fff'/><circle cx='50' cy='50' r='30' fill='%23ffd700' opacity='0.7'/></svg>">
 </head>
-<body>
-    <!-- template from yt -->
-    <nav>
-        <div class="nav-container">
-            <div class="logo" data-aos="fade-down" data-aos-duration="1000" onclick="hamburg(event)">
-                <a href="#" onclick="event.preventDefault()">strona's web <i class="fa-solid fa-chevron-down"></i></a>
-                <div class="dropdown">
-                    <div class="links">
-                        <a href="#home" class="active">Home</a>
-                        <a href="works.html">My Works</a>
-                        <i class="fa-solid fa-xmark cancel" onclick="cancel()"></i>
-                    </div>
-                </div>
+<body>    <div class="stars"></div>
+    <div class="cosmic-orb"></div>
+    <div class="constellation"></div>
+    <main class="container" role="main">
+        <div class="quote-card">
+            <div class="quote-container">
+                <div class="quote-marks">❝</div>
+                <p id="quote" class="quote" role="text" aria-live="polite"></p>
+                <p id="author" class="author" role="text" aria-live="polite"></p>
+                <div class="quote-marks closing">❞</div>
             </div>
-            <div class="links">
-                <div class="link" data-aos="fade-down" data-aos-duration="1000" data-aos-delay="100"><a href="#home">Home</a></div>
-                <div class="link" data-aos="fade-down" data-aos-duration="1000" data-aos-delay="200"><a href="#about">About</a></div>
-                <div class="link" data-aos="fade-down" data-aos-duration="1000" data-aos-delay="300"><a href="#skills">Skills</a></div>
-                <div class="link" data-aos="fade-down" data-aos-duration="1000" data-aos-delay="400"><a href="works.html">My Works</a></div>
-            </div>
-            <i class="fa-solid fa-bars hamburg" onclick="hamburg()"></i>
-    </nav>
-    
-    <section id="home">
-            <div class="main-container">
-                <div class="stars-container"></div>
-                <div class="content">
-                    <h1 data-aos="fade-left" data-aos-duration="1000" data-aos-delay="800">
-                        <span>Hello World,</span>
-                        <span>I'm <span class="highlight">Strona</span></span>
-                    </h1>
-                    <div class="typewriter" data-aos="fade-right" data-aos-duration="1000" data-aos-delay="900">
-                        <span>I'm an aspiring</span>
-                        <span id="typing-text"></span>
-                    </div>
-                    <p data-aos="flip-up" data-aos-duration="1000" data-aos-delay="1000">A curious person who is willing to learn more about interesting stuff...</p>
-                    <div class="social-links" data-aos="flip-down" data-aos-duration="1000" data-aos-delay="1200">
-                        <a href="https://www.facebook.com/rltags" ><i class="fa-brands fa-facebook"></i></a>
-                        <a href="https://www.youtube.com/@pffffffffft""><i class="fa-brands fa-youtube" ></i></a>
-                        <a href="https://www.tiktok.com/@stronah"><i class="fa-brands fa-tiktok"></i></a>
-                        <a href="https://github.com/strawnah"><i class="fa-brands fa-github"></i></a>
-                    </div>
-                    <div class="btn" data-aos="zoom-out-left" data-aos-duration="1000" data-aos-delay="1300">
-                        <a href=""><button>Back to Quotes</button></a>
-                    </div>
-                </div>
-            </div>
-        </section><!-- template until here -->
-        
-        <section id="about">
-            <div class="shooting-stars-container"></div>
-            <div class="stars-container"></div>
-            <div class="about-container">
-                <div class="about-content">
-                    <h1><span id="typewriter-text"></span></h1>
-                    <p id="about-desc" style="opacity: 0">Description ini. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem nam culpa perspiciatis odio quasi asperiores autem maxime sed! Alias ullam doloribus voluptate illum accusamus, velit officiis voluptatibus aliquid dolores tenetur.</p> <!-- Placeholder for typewriter animation -->
-                </div>
-            </div>
-        </section>
-
-        <section id="skills">
-            <div class="stars-container"></div>
-            <div class="skills-container">
-                <div class="skills-content">
-                    <h1>Skills</h1>
-                    <p>Learned in percentage*</p>
-                    <div class="skills-grid">
-                        <div class="skill-item">
-                            <div class="icon"><i class="fa fa-camera"></i></div>
-                            <div class="skill-desc">Photography and Videography</div>
-                            <div class="skill-percent">50%</div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="icon"><i class="fa fa-desktop"></i></div>
-                            <div class="skill-desc">Graphics Designing</div>
-                            <div class="skill-percent">20%</div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="icon"><i class="fa fa-video"></i></div>
-                            <div class="skill-desc">Video Editing</div>
-                            <div class="skill-percent">40%</div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="icon"><i class="fa fa-globe"></i></div>
-                            <div class="skill-desc">Web Development</div>
-                            <div class="skill-percent">10%</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-        <script src="assets/js/script.js"></script>
-        <footer>
-            <div class="footer-container">
-                <div class="footer-content">
-                    <p>2025 Strona. All rights reserved.</p>
-                </div>
-            </div>
-        </footer>
-    </body>
+            <button id="newQuote" class="new-quote-btn" aria-label="Generate new quote">
+                <span class="btn-text">New Quote</span>
+                <span class="btn-icon">✧</span>
+            </button>
+        </div>
+    </main>
+    <footer class="page-footer">
+        <div class="footer-content">
+            <button class="footer-btn" onclick="window.location.href='home.html'">
+            <span class="footer-text">✨ Who made this? ✨</span>
+        </button>
+        </div>
+    </footer>
+    <script src="assets/js/quote.js"></script>
+</body>
 </html>
